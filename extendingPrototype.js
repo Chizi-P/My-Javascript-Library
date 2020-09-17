@@ -35,96 +35,75 @@ const undefinedParameterOfSubset = new ReferenceError("Undefined a parameter of 
 
 // 交集 //
 Set.prototype.intersection = function intersection(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        var intersection = new Set();
-        for (const element of otherSet) {
-            if (this.has(element)) {
-                intersection.add(element);
-            }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    var intersection = new Set();
+    for (const element of otherSet) {
+        if (this.has(element)) {
+            intersection.add(element);
         }
-        return intersection;
     }
-    throw notTypeofSet;
+    return intersection;
 }
 
 // 對稱差集 //
 Set.prototype.symmetricDifference = function symmetricDifference(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        // 聯集減去交集
-        return this.union(otherSet).subtracting(this.intersection(otherSet));
-    } else {
-        throw notTypeofSet;
-    }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    // 聯集減去交集
+    return this.union(otherSet).subtracting(this.intersection(otherSet));
 }
 
 // 聯集 //
 Set.prototype.union = function union(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        return new Set([...this, ...otherSet]);
-    } else {
-        throw notTypeofSet;
-    }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    return new Set([...this, ...otherSet]);
 }
 
 // 減去 //
 Set.prototype.subtracting = function subtracting(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        var subtracting = new Set(this);
-        for (const element of otherSet) {
-            subtracting.delete(element);
-        }
-        return subtracting;
-    } else {
-        throw notTypeofSet;
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    var subtracting = new Set(this);
+    for (const element of otherSet) {
+        subtracting.delete(element);
     }
+    return subtracting;
 }
 
 // 前者是否後者的子集 //
 Set.prototype.isSubset = function isSubset(superset) {
-    if (subset == undefined) {
-        throw undefinedParameterOfSuperset;
-    }
-    if (superset instanceof Set) {
-        for (const element of this) {
-            if (!superset.has(element)) {
-                return false;
-            }
+    if (subset == undefined) throw undefinedParameterOfSuperset;
+    if (!(superset instanceof Set)) throw notTypeofSet;
+    for (const element of this) {
+        if (!superset.has(element)) {
+            return false;
         }
-        return true;
     }
-    throw notTypeofSet;
+    return true;
 }
 
 // 前者是否後者的超集 //
 Set.prototype.isSuperset = function isSuperset(subset) {
-    if (subset == undefined) {
-        throw undefinedParameterOfSubset;
-    }
-    if (subset instanceof Set) {
-        for (const element of subset) {
-            if (!this.has(element)) {
-                return false;
-            }
+    if (subset == undefined) throw undefinedParameterOfSubset;
+    if (!(subset instanceof Set))  throw notTypeofSet;
+    for (const element of subset) {
+        if (!this.has(element)) {
+            return false;
         }
-        return true;
     }
-    throw notTypeofSet;
+    return true;
 }
 
 // 不交集
 Set.prototype.isDisjoint = function isDisjoint(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        // 優化：減少檢查次數
-        const isLoopThis = this.size <= otherSet.size;
-        const loopSet = isLoopThis ? this : otherSet;
-        const checkSet = isLoopThis ? otherSet : this;
-        for (const element of loopSet) {
-            if (checkSet.has(element)) {
-                return false;
-            }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    // 優化：減少檢查次數
+    const isLoopThis = this.size <= otherSet.size;
+    const loopSet = isLoopThis ? this : otherSet;
+    const checkSet = isLoopThis ? otherSet : this;
+    for (const element of loopSet) {
+        if (checkSet.has(element)) {
+            return false;
         }
-        return true;
     }
-    throw notTypeofSet;
+    return true;
 }
 
