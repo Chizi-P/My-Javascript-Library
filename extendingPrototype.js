@@ -18,7 +18,7 @@ const SetExtendingPrototypeName = [
     'isDisjoint'
 ];
 
-// 檢查擴展原型名稱是否未被使用
+// 檢查擴展原型名稱是否未被使用 //
 function CheckExtensionPrototypeName() {
     for (let proto in SetExtendingPrototypeName) {
         if (Set.hasOwnProperty(proto)) {
@@ -28,12 +28,12 @@ function CheckExtensionPrototypeName() {
     return true;
 }
 
-// Define error
+// Define error //
 const notTypeofSet = new TypeError("Incoming parameter is not type of Set");
 const undefinedParameterOfSuperset = new ReferenceError("Undefined a parameter of 'superset', can't compare with it");
 const undefinedParameterOfSubset = new ReferenceError("Undefined a parameter of 'subset', can't compare with it");
 
-// 交集
+// 交集 //
 Set.prototype.intersection = function intersection(otherSet = new Set()) {
     if (otherSet instanceof Set) {
         var intersection = new Set();
@@ -43,12 +43,11 @@ Set.prototype.intersection = function intersection(otherSet = new Set()) {
             }
         }
         return intersection;
-    } else {
-        throw notTypeofSet;
     }
+    throw notTypeofSet;
 }
 
-// 對稱差集
+// 對稱差集 //
 Set.prototype.symmetricDifference = function symmetricDifference(otherSet = new Set()) {
     if (otherSet instanceof Set) {
         // 聯集減去交集
@@ -58,7 +57,7 @@ Set.prototype.symmetricDifference = function symmetricDifference(otherSet = new 
     }
 }
 
-// 聯集
+// 聯集 //
 Set.prototype.union = function union(otherSet = new Set()) {
     if (otherSet instanceof Set) {
         return new Set([...this, ...otherSet]);
@@ -67,7 +66,7 @@ Set.prototype.union = function union(otherSet = new Set()) {
     }
 }
 
-// 減去
+// 減去 //
 Set.prototype.subtracting = function subtracting(otherSet = new Set()) {
     if (otherSet instanceof Set) {
         var subtracting = new Set(this);
@@ -80,7 +79,7 @@ Set.prototype.subtracting = function subtracting(otherSet = new Set()) {
     }
 }
 
-// 前者是否後者的子集
+// 前者是否後者的子集 //
 Set.prototype.isSubset = function isSubset(superset) {
     if (subset == undefined) {
         throw undefinedParameterOfSuperset;
@@ -92,12 +91,11 @@ Set.prototype.isSubset = function isSubset(superset) {
             }
         }
         return true;
-    } else {
-        throw notTypeofSet;
     }
+    throw notTypeofSet;
 }
 
-// 前者是否後者的超集
+// 前者是否後者的超集 //
 Set.prototype.isSuperset = function isSuperset(subset) {
     if (subset == undefined) {
         throw undefinedParameterOfSubset;
@@ -109,9 +107,8 @@ Set.prototype.isSuperset = function isSuperset(subset) {
             }
         }
         return true;
-    } else {
-        throw notTypeofSet;
     }
+    throw notTypeofSet;
 }
 
 // 不交集
@@ -127,7 +124,7 @@ Set.prototype.isDisjoint = function isDisjoint(otherSet = new Set()) {
             }
         }
         return true;
-    } else {
-        throw notTypeofSet;
     }
+    throw notTypeofSet;
 }
+
