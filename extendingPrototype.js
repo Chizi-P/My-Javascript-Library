@@ -31,6 +31,7 @@ function CheckExtensionPrototypeName() {
 const notTypeofSet = new TypeError("Incoming parameter is not type of Set");
 const undefinedParameterOfSuperset = new ReferenceError("Undefined a parameter of 'superset', can't compare with it");
 const undefinedParameterOfSubset = new ReferenceError("Undefined a parameter of 'subset', can't compare with it");
+const notTypeofNumber = new TypeError("Incoming parameter is not type of Number");
 
 // 交集 //
 Set.prototype.intersection = function intersection(otherSet = new Set()) {
@@ -114,6 +115,46 @@ Array.prototype.copy = function copy() {
     return this.slice();
 }
 
+Array.prototype.copyFill = function copyFill(value, start = 0, end = this.length) {
+    if (value instanceof Array || value instanceof Object) {
+        for (let i = start; i < end; i++) {
+            this[i] = value.copy();
+        }
+    } else {
+        this.fill(value, start, end);
+    }
+}
+
+// Four arithmetic of Array
+// 加
+Array.prototype.plus = function plus(value = 0) {
+    if (typeof value != "number") {
+        throw notTypeofNumber;
+    }
+    return this.map(element => element + value);
+}
+// 減
+Array.prototype.minus = function minus(value = 0) {
+    if (typeof value != "number") {
+        throw notTypeofNumber;
+    }
+    return this.map(element => element - value);
+}
+// 乘
+Array.prototype.multiply = function multiply(value = 1) {
+    if (typeof value != "number") {
+        throw notTypeofNumber;
+    }
+    return this.map(element => element * value);
+}
+// 除
+Array.prototype.divide = function divide(value = 1) {
+    if (typeof value != "number") {
+        throw notTypeofNumber;
+    }
+    return this.map(element => element / value);
+}
+
 
 /**
  * Extanding the prototype of Json Object
@@ -133,6 +174,12 @@ String.prototype
  * Extanding the prototype of Number
  */
 Number.prototype
+
+
+/**
+ * Extanding the prototype of Boolean
+ */
+Boolean.prototype
 
 
 /**
@@ -166,3 +213,7 @@ class Tuple {
     }
 }
 
+
+function print() {
+    console.log(...arguments);
+}
