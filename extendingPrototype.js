@@ -214,6 +214,4 @@ class Tuple {
 }
 
 
-function print() {
-    console.log(...arguments);
-}
+const print = console.log;
