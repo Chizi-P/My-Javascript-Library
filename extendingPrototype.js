@@ -128,31 +128,28 @@ Array.prototype.copyFill = function copyFill(value, start = 0, end = this.length
 // Four arithmetic of Array
 // 加
 Array.prototype.plus = function plus(value = 0) {
-    if (typeof value != "number") {
-        throw notTypeofNumber;
-    }
+    if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element + value);
 }
 // 減
 Array.prototype.minus = function minus(value = 0) {
-    if (typeof value != "number") {
-        throw notTypeofNumber;
-    }
+    if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element - value);
 }
 // 乘
 Array.prototype.multiply = function multiply(value = 1) {
-    if (typeof value != "number") {
-        throw notTypeofNumber;
-    }
+    if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element * value);
 }
 // 除
 Array.prototype.divide = function divide(value = 1) {
-    if (typeof value != "number") {
-        throw notTypeofNumber;
-    }
+    if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element / value);
+}
+// 模除
+Array.prototype.mod = function mod(value = 1) {
+    if (typeof value != "number") throw notTypeofNumber;
+    return this.map(element => element % value);
 }
 
 
