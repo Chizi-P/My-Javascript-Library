@@ -18,7 +18,7 @@ const SetExtendingPrototypeName = [
     'isDisjoint'
 ];
 
-// 檢查擴展原型名稱是否未被使用
+// 檢查擴展原型名稱是否未被使用 //
 function CheckExtensionPrototypeName() {
     for (let proto in SetExtendingPrototypeName) {
         if (Set.hasOwnProperty(proto)) {
@@ -28,106 +28,82 @@ function CheckExtensionPrototypeName() {
     return true;
 }
 
-// Define error
+// Define error //
 const notTypeofSet = new TypeError("Incoming parameter is not type of Set");
 const undefinedParameterOfSuperset = new ReferenceError("Undefined a parameter of 'superset', can't compare with it");
 const undefinedParameterOfSubset = new ReferenceError("Undefined a parameter of 'subset', can't compare with it");
 
-// 交集
+// 交集 //
 Set.prototype.intersection = function intersection(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        var intersection = new Set();
-        for (const element of otherSet) {
-            if (this.has(element)) {
-                intersection.add(element);
-            }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    var intersection = new Set();
+    for (const element of otherSet) {
+        if (this.has(element)) {
+            intersection.add(element);
         }
-        return intersection;
-    } else {
-        throw notTypeofSet;
     }
+    return intersection;
 }
 
-// 對稱差集
+// 對稱差集 //
 Set.prototype.symmetricDifference = function symmetricDifference(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        // 聯集減去交集
-        return this.union(otherSet).subtracting(this.intersection(otherSet));
-    } else {
-        throw notTypeofSet;
-    }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    // 聯集減去交集
+    return this.union(otherSet).subtracting(this.intersection(otherSet));
 }
 
-// 聯集
+// 聯集 //
 Set.prototype.union = function union(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        return new Set([...this, ...otherSet]);
-    } else {
-        throw notTypeofSet;
-    }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    return new Set([...this, ...otherSet]);
 }
 
-// 減去
+// 減去 //
 Set.prototype.subtracting = function subtracting(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        var subtracting = new Set(this);
-        for (const element of otherSet) {
-            subtracting.delete(element);
-        }
-        return subtracting;
-    } else {
-        throw notTypeofSet;
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    var subtracting = new Set(this);
+    for (const element of otherSet) {
+        subtracting.delete(element);
     }
+    return subtracting;
 }
 
-// 前者是否後者的子集
+// 前者是否後者的子集 //
 Set.prototype.isSubset = function isSubset(superset) {
-    if (subset == undefined) {
-        throw undefinedParameterOfSuperset;
-    }
-    if (superset instanceof Set) {
-        for (const element of this) {
-            if (!superset.has(element)) {
-                return false;
-            }
+    if (subset == undefined) throw undefinedParameterOfSuperset;
+    if (!(superset instanceof Set)) throw notTypeofSet;
+    for (const element of this) {
+        if (!superset.has(element)) {
+            return false;
         }
-        return true;
-    } else {
-        throw notTypeofSet;
     }
+    return true;
 }
 
-// 前者是否後者的超集
+// 前者是否後者的超集 //
 Set.prototype.isSuperset = function isSuperset(subset) {
-    if (subset == undefined) {
-        throw undefinedParameterOfSubset;
-    }
-    if (subset instanceof Set) {
-        for (const element of subset) {
-            if (!this.has(element)) {
-                return false;
-            }
+    if (subset == undefined) throw undefinedParameterOfSubset;
+    if (!(subset instanceof Set))  throw notTypeofSet;
+    for (const element of subset) {
+        if (!this.has(element)) {
+            return false;
         }
-        return true;
-    } else {
-        throw notTypeofSet;
     }
+    return true;
 }
 
 // 不交集
 Set.prototype.isDisjoint = function isDisjoint(otherSet = new Set()) {
-    if (otherSet instanceof Set) {
-        // 優化：減少檢查次數
-        const isLoopThis = this.size <= otherSet.size;
-        const loopSet = isLoopThis ? this : otherSet;
-        const checkSet = isLoopThis ? otherSet : this;
-        for (const element of loopSet) {
-            if (checkSet.has(element)) {
-                return false;
-            }
+    if (!(otherSet instanceof Set)) throw notTypeofSet;
+    // 優化：減少檢查次數
+    const isLoopThis = this.size <= otherSet.size;
+    const loopSet = isLoopThis ? this : otherSet;
+    const checkSet = isLoopThis ? otherSet : this;
+    for (const element of loopSet) {
+        if (checkSet.has(element)) {
+            return false;
         }
-        return true;
-    } else {
-        throw notTypeofSet;
     }
+    return true;
 }
+
