@@ -7,7 +7,6 @@
 /**
  * Extending the prototype of Set
  */
-
 const SetExtendingPrototypeName = [
     'intersection',
     'symmetricDifference',
@@ -105,5 +104,65 @@ Set.prototype.isDisjoint = function isDisjoint(otherSet = new Set()) {
         }
     }
     return true;
+}
+
+
+/**
+ * Extanding the prototype of Array 
+ */
+Array.prototype.copy = function copy() {
+    return this.slice();
+}
+
+
+/**
+ * Extanding the prototype of Json Object
+ */
+Object.prototype.copy = function copy() {
+    return JSON.parse(JSON.stringify(this));
+}
+
+
+/**
+ * Extanding the prototype of String
+ */
+String.prototype
+
+
+/**
+ * Extanding the prototype of Number
+ */
+Number.prototype
+
+
+/**
+ * Type Aliases
+ */
+// Number.typealias = function typealias(aliases) {
+//      
+// }
+
+
+/**
+ * Tuple type
+ * 
+ */
+class Tuple {
+    constructor(object) {
+        if (arguments.length == 1 && typeof object == Object) {
+            this.container = object;
+            Object.keys(object).forEach(key => {
+                this[key] = object[key];
+            });
+        } else {
+            this.container = [...arguments];
+        }
+    }
+    toObject() {
+        return this.container;
+    }
+    toArray() {
+        return this.container;
+    }
 }
 
