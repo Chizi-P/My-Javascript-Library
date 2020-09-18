@@ -92,7 +92,7 @@ Set.prototype.isSuperset = function isSuperset(subset) {
     return true;
 }
 
-// 不交集
+// 不交集 //
 Set.prototype.isDisjoint = function isDisjoint(otherSet = new Set()) {
     if (!(otherSet instanceof Set)) throw notTypeofSet;
     // 優化：減少檢查次數
@@ -115,7 +115,7 @@ Array.prototype.copy = function copy() {
     return this.slice();
 }
 
-Array.prototype.copyFill = function copyFill(value, start = 0, end = this.length) {
+Array.prototype.fillCopy = function fillCopy(value, start = 0, end = this.length) {
     if (value instanceof Array || value instanceof Object) {
         for (let i = start; i < end; i++) {
             this[i] = value.copy();
@@ -123,30 +123,49 @@ Array.prototype.copyFill = function copyFill(value, start = 0, end = this.length
     } else {
         this.fill(value, start, end);
     }
+    return this;
 }
 
+// 創建多維矩陣 //
+Array.create2d = function create2d(len1, len2) {
+    return new Array(len1).fillCopy(len2 == undefined ? [] : new Array(len2));
+}
+Array.create3d = function create3d(len1, len2, len3) {
+    return new Array(len1).fillCopy(new Array(len2).fillCopy(len2 == undefined ? [] : new Array(len3)));
+}
+Array.create4d = function create4d(len1, len2, len3, len4) {
+    return new Array(len1).fillCopy(new Array(len2).fillCopy(new Array(len3).fillCopy(len2 == undefined ? [] : new Array(len4))));
+}
+Array.create5d = function create4d(len1, len2, len3, len4, len5) {
+    return new Array(len1).fillCopy(new Array(len2).fillCopy(new Array(len3).fillCopy(new Array(len4).fillCopy(len2 == undefined ? [] : new Array(len5)))));
+}
+Array.create6d = function create4d(len1, len2, len3, len4, len5, len6) {
+    return new Array(len1).fillCopy(new Array(len2).fillCopy(new Array(len3).fillCopy(new Array(len4).fillCopy(new Array(len5).fillCopy(len2 == undefined ? [] : new Array(len6))))));
+}
+
+
 // Four arithmetic of Array
-// 加
+// 加 //
 Array.prototype.plus = function plus(value = 0) {
     if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element + value);
 }
-// 減
+// 減 //
 Array.prototype.minus = function minus(value = 0) {
     if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element - value);
 }
-// 乘
+// 乘 //
 Array.prototype.multiply = function multiply(value = 1) {
     if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element * value);
 }
-// 除
+// 除 //
 Array.prototype.divide = function divide(value = 1) {
     if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element / value);
 }
-// 模除
+// 模除 //
 Array.prototype.mod = function mod(value = 1) {
     if (typeof value != "number") throw notTypeofNumber;
     return this.map(element => element % value);
