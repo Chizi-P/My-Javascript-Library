@@ -176,35 +176,36 @@ const extendingPrototype = {
         // Four arithmetic of Array
         // 只針對類型是 number 的元素做運算
         // ### 要擴展成可以對矩陣與矩陣運算
+        // ### 擴展至對任意維度矩陣 - 完成
         // 加 //
         plus : function plus(value = 0) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element + value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element + value : element);
         },
         // 減 //
         minus : function minus(value = 0) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element - value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element - value : element);
         },
         // 乘 //
         multiply : function multiply(value = 1) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element * value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element * value : element);
         },
         // 除 //
         divide : function divide(value = 1) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element / value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element / value : element);
         },
         // 模除 //
         mod : function mod(value = 1) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element % value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element % value : element);
         },
         // 次方 //
         pow : function pow(value) {
             if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => typeof element == "number" ? element ** value : element);
+            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element ** value : element);
         },
 
         // 直和 //
@@ -214,6 +215,18 @@ const extendingPrototype = {
             // ### 未完成
             
         },
+        // 拼合 //
+        flatten : function flatten() {
+            // ### 未完成
+        },
+        // 構成 //
+        // D = [
+        //     [A, B],
+        //     [0, C]
+        // ];
+        form : function form(array) {
+            // ### 未完成
+        }
     },
 
     
@@ -229,11 +242,11 @@ const extendingPrototype = {
 
 // 檢查擴展原型名稱是否未被使用 或 載入擴展原型  //
 function preparationForExtendPrototype(option) {
-    for (const typeName in extendingPrototype) {
+    for (const typeName of Object.keys(extendingPrototype)) {
         var Type = undefined;
         switch (typeName) {
-            case "Set":
-                Type = Set;
+            case "SetPrototype":
+                Type = Set.prototype;
                 break;
             case "Array":
                 Type = Array;
@@ -245,20 +258,29 @@ function preparationForExtendPrototype(option) {
                 Type = Object.prototype;
                 break;
             default:
+                throw "### 有未設置對應 prototype 的 case 的類別";
                 break;
         }
         if (option == 'check') {
-            for (const prototypeName in extendingPrototype[typeName]) {
+            console.log("\nchecking:", typeName);
+            for (const prototypeName of Object.keys(extendingPrototype[typeName])) {
                 if (Type.hasOwnProperty(prototypeName)) {
                     throw `The extending prototype name of ${prototypeName} has been used`;
                 }
+                console.log("checked:", prototypeName);
             }
         }
         if (option == 'load') {
-            for (const prototypeName in extendingPrototype[typeName]) {
-                Type.prototype[prototypeName] = extendingPrototype[typeName][prototypeName];
+            console.log('\nloading:', typeName);
+            for (const prototypeName of Object.keys(extendingPrototype[typeName])) {
+                Type[prototypeName] = extendingPrototype[typeName][prototypeName];
+                console.log("loaded:", prototypeName);
             }
         }
-        return true;
     }
+    return true;
 }
+
+
+preparationForExtendPrototype('check');
+preparationForExtendPrototype('load');
