@@ -8,10 +8,12 @@ const _ = undefined;
 const print = console.log;
 
 // Define error //
+// ### 英文表達有點問題，需要修改
 const notTypeofSet = new TypeError("Incoming parameter is not type of Set");
 const undefinedParameterOfSuperset = new ReferenceError("Undefined a parameter of 'superset', can't compare with it");
 const undefinedParameterOfSubset = new ReferenceError("Undefined a parameter of 'subset', can't compare with it");
-const notTypeofNumber = new TypeError("Incoming parameter is not type of Number");
+const notTypeofNumberOrArray = new TypeError("Incoming parameter is not type of Number or Array");
+const notMatchArrayShape = new Error("Two array shape need match");
 
 // 特定範圍的連續值矩陣 //
 // 輸入1個變數 返回[0...(param = start)]
@@ -124,6 +126,15 @@ const extendingPrototype = {
         },
         create6d : function create4d(len1, len2, len3, len4, len5, len6) {
             return new Array(len1).fillCopy(new Array(len2).fillCopy(new Array(len3).fillCopy(new Array(len4).fillCopy(new Array(len5).fillCopy(len6 == undefined ? [] : new Array(len6))))));
+        },
+        create : function create(dim, shapes) {
+            function loop() {
+                
+            }
+            for (let i = dim; i > 0; i--) {
+                loop()
+            }
+
         }
     },
     
@@ -169,7 +180,24 @@ const extendingPrototype = {
         },
 
         // 重塑 //
-        reshape : function reshape() {
+        reshape : function reshape(shapes) {
+            if (!Array.isArray(shapes)) {
+                throw "Incoming parameter is not Array";
+            }
+            
+            // ### 未完成
+        },
+        // 構成 //
+        // D = [
+        //     [A, B],
+        //     [0, C]
+        // ];
+        form : function form(form) {
+            // const dim = form.getDim();
+            // const itemDim = dim / 2;
+            // for (let i = 0; i < itemDim; i++) {
+            //     form[itemDim]
+            // }
             // ### 未完成
         },
 
@@ -179,8 +207,15 @@ const extendingPrototype = {
         // ### 擴展至對任意維度矩陣 - 完成
         // 加 //
         plus : function plus(value = 0) {
-            if (typeof value != "number") throw notTypeofNumber;
-            return this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element + value : element);
+            if (typeof value == "number") this.map(element => Array.isArray(element) ? element.plus(value) : typeof element == "number" ? element + value : element);
+            if (Array.isArray(value)) {
+                if (this.getShape().toString() == value.getShape().toString()) {
+                    // ### 未完成
+                } else {
+                    throw notMatchArrayShape;
+                }
+            }
+            throw notTypeofNumberOrArray;
         },
         // 減 //
         minus : function minus(value = 0) {
@@ -218,14 +253,6 @@ const extendingPrototype = {
         // 拼合 //
         flatten : function flatten() {
             // ### 未完成
-        },
-        // 構成 //
-        // D = [
-        //     [A, B],
-        //     [0, C]
-        // ];
-        form : function form(array) {
-            // ### 未完成
         }
     },
 
@@ -258,7 +285,7 @@ function preparationForExtendPrototype(option) {
                 Type = Object.prototype;
                 break;
             default:
-                throw "### 有未設置對應 prototype 的 case 的類別";
+                throw "### 有未設置對應 prototype 的 switch case 的類別";
                 break;
         }
         if (option == 'check') {
@@ -284,3 +311,84 @@ function preparationForExtendPrototype(option) {
 
 preparationForExtendPrototype('check');
 preparationForExtendPrototype('load');
+
+
+// test--------------------------------------------------------------------------//
+
+/**
+ * Operator overloading
+ * 運算子重載
+ */
+
+// function operatorOverloading() {
+//     function plus() {
+        
+//     }
+//     valueOf() {
+        
+//     }
+//     function minus() {
+        
+//     }
+// }
+
+class operatorOverloading {
+    constructor(operator, func) {
+        this.operator = operator;
+        this.func = func;
+        this.data;
+    }
+    setData(data) {
+        this.data = data;
+    }
+    valueOf() {
+        console.log(JSON.stringify(this.data));
+        return JSON.stringify(this.data);
+    }
+    toString() {
+        console.log(JSON.stringify(this.data));
+        return JSON.stringify(this.data);
+    }
+    set load(data) {
+        console.log(data);
+        data = data.replace(/\]\[/g, "], [");
+        console.log(data);
+        this.data = JSON.parse('[' + data + ']');
+        return this.data;
+    }
+    get get() {
+        return this.data;
+    }
+}
+
+var o = new operatorOverloading('+', () => {});
+var p = new operatorOverloading('+', () => {})
+o.setData([1, 2, 3, 4, 5, 6, 7 , 8, 9, 0]);
+p.setData([1]);
+var x = new operatorOverloading('+', () => {});
+// console.log(o + p);
+x.load = o + p;
+console.log(x.get);
+
+// class test {
+//     constructor(a) {
+//         this.a = a;
+//         this.b = 0;
+//     }
+//     get getter() {
+//         return this.b
+//     }
+//     set setter(a) {
+//         if (a < 0) {
+//             return -1 * a;
+//         }
+//     }
+// }
+
+// var t = new test(-3);
+// console.log(t.getter);
+
+// t.a = -4;
+// console.log(t.setter);
+
+
