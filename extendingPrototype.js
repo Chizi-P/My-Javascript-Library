@@ -139,6 +139,7 @@ const extendingPrototype = {
     },
     
     ArrayPrototype: {
+        // 淺層拷貝
         copy : function copy() {
             return this.slice();
         },
