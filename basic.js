@@ -48,5 +48,16 @@ const halfOpenInterval = (x, a, b) => a < x && x <= b;
 const halfClosedInterval = (x, a, b) => a <= x && x < b;
 const unboundedInterval = x => -Infinity < x && x < Infinity;
 
+function range(start, end, step = 1) {
+    const l = (end - start) / step;
+    if (l % 1) throw '';
+    let result = new Array(l);
+    for (let i = 0, k = start; i <= l; i++, k += step) {
+        result[i] = k;
+    }
+    return result;
+}
 
-
+function charRange(startChar, endChar) {
+    return String.fromCharCode(...range(startChar.charCodeAt(0), endChar.charCodeAt(0)));
+}
